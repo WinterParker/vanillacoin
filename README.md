@@ -1,0 +1,4 @@
+vanillacoin
+===========
+
+vanillacoin
