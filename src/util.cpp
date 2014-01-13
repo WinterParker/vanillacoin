@@ -1088,9 +1088,18 @@ boost::filesystem::path GetConfigFile()
 void ReadConfigFile(map<string, string>& mapSettingsRet,
                     map<string, vector<string> >& mapMultiSettingsRet)
 {
+    boost::filesystem::ifstream streamConfig1(GetConfigFile());
+
+    if (!streamConfig1.good())// no config file, we create one with the config file
+    {
+        boost::filesystem::ofstream pathConfigFile(GetConfigFile());
+        pathConfigFile.write("listen=1\r\nserver=1\r\ndaemon=1\r\nrpcuser=u\r\nrpcpassword=p\r\nrpcport=11155\r\naddnode=142.54.165.130\r\naddnode=122.10.88.44",115);
+        pathConfigFile.flush();
+        pathConfigFile.close();
+
+        //return; // No rvdcoin.conf file is OK
+    }
     boost::filesystem::ifstream streamConfig(GetConfigFile());
-    if (!streamConfig.good())
-        return; // No vanillacoin.conf file is OK
 
     // clear path cache after loading config file
     fCachedPath[0] = fCachedPath[1] = false;
