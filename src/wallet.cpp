@@ -13,7 +13,7 @@
 using namespace std;
 
 
-//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////// Limit size
 //
 // mapWallet
 //
@@ -1265,10 +1265,11 @@ bool CWallet::CreateTransaction(const vector<pair<CScript, int64> >& vecSend,
                         return false;
                     }
 
-                // Limit size
+                 // Limit size
                 unsigned int nBytes = ::GetSerializeSize(*(CTransaction*)&wtxNew, SER_NETWORK, PROTOCOL_VERSION);
-                // vanillacoin: fix
-                if (nBytes >= MAX_STANDARD_TX_SIZE)
+   
+                if ((nBytes + 5000 >= MAX_STANDARD_TX_SIZE) ||
+                    (wtxNew.vin.size() >= 200))
                 {
                     strFailReason = _("Transaction too large");
                     return false;
